@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 30px auto; padding: 0 20px;">
+    <!-- Botón Volver -->
+    <a href="/" style="display: inline-block; margin-bottom: 20px; color: #0f5132; text-decoration: none; font-weight: bold;">
+        ← Volver al catálogo
+    </a>
+
+    <!-- Tarjeta Principal del Restaurante -->
+    <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 30px;">
+        <img src="{{ restaurant.photo }}" alt="{{ restaurant.name }}" style="width: 100%; height: 320px; object-fit: cover;">
+        
+        <div style="padding: 25px;">
+            <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div>
+                    <h1 style="color: #0f5132; margin: 0 0 10px 0;">{{ restaurant.name }}</h1>
+                    <p style="color: #666; margin: 0 0 15px 0; font-size: 1.1em;">
+                        📍 {{ restaurant.city }} | 🏷️ {{ restaurant.category }}
+                    </p>
+                </div>
+                <div style="text-align: right;">
+                    <span style="background: #e8f5e9; color: #0f5132; padding: 6px 12px; border-radius: 20px; font-weight: bold;">
+                        {% for i in range(restaurant.price) %}${% endfor %}
+                    </span>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px; margin-top: 15px; border-top: 1px solid #eee; padding-top: 15px;">
+                <span style="font-size: 1.4em; color: #f1c40f;">★ {{ restaurant.avgRating | round(1) }}</span>
+                <span style="color: #888;">({{ restaurant.numRatings }} reseñas)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Opiniones / Reseñas -->
+    <div style="background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <h3 style="color: #0f5132; margin-top: 0;">💬 Reseñas y Comentarios</h3>
+
+        {% if ratings %}
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                {% for r in ratings %}
+                <div style="border-bottom: 1px solid #eee; padding-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <strong style="color: #333;">{{ r.userName or 'Comensal' }}</strong>
+                        <span style="color: #f1c40f;">★ {{ r.rating }}</span>
+                    </div>
+                    <p style="color: #555; margin: 5px 0 0 0;">{{ r.text }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="color: #777;">Aún no hay reseñas registradas para este restaurante.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

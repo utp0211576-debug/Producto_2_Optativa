@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FriendlyEats - Restaurantes</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f8; margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .btn-add { background-color: #198754; color: white; padding: 10px 16px; text-decoration: none; border-radius: 6px; font-weight: bold; }
+        
+        .filters { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .filters select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-filter { background-color: #0d6efd; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .btn-reset { background-color: #6c757d; color: white; text-decoration: none; padding: 8px 14px; border-radius: 4px; font-weight: bold; }
+
+        .alert { padding: 12px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; }
+        .alert-success { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card-body { padding: 15px; flex-grow: 1; }
+        .card-title { margin: 0 0 10px 0; color: #333; }
+        .card-info { color: #666; font-size: 0.9em; margin-bottom: 5px; }
+
+        .actions { display: flex; gap: 5px; margin-top: 15px; }
+        .btn-edit { background-color: #ffc107; color: #000; text-decoration: none; padding: 8px 12px; border-radius: 4px; font-weight: bold; flex: 1; text-align: center; }
+        .btn-delete { background-color: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Encabezado Principal -->
+        <div class="header">
+            <h1 style="color: #0f5132; margin: 0;">🍔 FriendlyEats</h1>
+            <a href="/restaurants/new" class="btn-add">+ Nuevo Restaurante</a>
+        </div>
+
+        <!-- Alertas de Confirmación -->
+        {% if request.query_params.get('deleted') == 'true' %}
+            <div class="alert alert-success">✅ Restaurante eliminado correctamente.</div>
+        {% endif %}
+
+        {% if request.query_params.get('updated') == 'true' %}
+            <div class="alert alert-success">✅ Restaurante actualizado correctamente.</div>
+        {% endif %}
+
+        <!-- Bar con Filtros de Búsqueda -->
+        <form method="GET" action="/" class="filters">
+            <label style="font-weight: bold;">Filtrar por:</label>
+            
+            <input type="text" name="city" placeholder="Ciudad..." value="{{ selected_city }}" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            
+            <input type="text" name="category" placeholder="Categoría..." value="{{ selected_category }}" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+
+            <select name="price">
+                <option value="">Cualquier precio</option>
+                <option value="1" {% if selected_price == '1' %}selected{% endif %}>$ (Económico)</option>
+                <option value="2" {% if selected_price == '2' %}selected{% endif %}>$$ (Moderado)</option>
+                <option value="3" {% if selected_price == '3' %}selected{% endif %}>$$$ (Ejecutivo)</option>
+                <option value="4" {% if selected_price == '4' %}selected{% endif %}>$$$$ (Gourmet)</option>
+            </select>
+
+            <button type="submit" class="btn-filter">Filtrar</button>
+            <a href="/" class="btn-reset">Limpiar</a>
+        </form>
+
+        <!-- Catálogo de Restaurantes -->
+        {% if restaurants %}
+            <div class="grid">
+                {% for restaurant in restaurants %}
+                    <div class="card">
+                        <a href="/restaurants/{{ restaurant.id }}">
+                            <img src="{{ restaurant.photo }}" alt="{{ restaurant.name }}">
+                        </a>
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <a href="/restaurants/{{ restaurant.id }}" style="text-decoration: none; color: inherit;">
+                                    {{ restaurant.name }}
+                                </a>
+                            </h2>
+                            <div class="card-info">📍 <strong>Ciudad:</strong> {{ restaurant.city }}</div>
+                            <div class="card-info">🏷️ <strong>Categoría:</strong> {{ restaurant.category }}</div>
+                            <div class="card-info">💵 <strong>Precio:</strong> 
+                                {% if restaurant.price == 1 %}${% elif restaurant.price == 2 %}$${% elif restaurant.price == 3 %}$$${% else %}$$$${% endif %}
+                            </div>
+                            <div class="card-info">⭐ <strong>Calificación:</strong> {{ restaurant.avgRating }} ({{ restaurant.numRatings }})</div>
+
+                            <!-- Botones de Acción (Editar / Eliminar) -->
+                            <div class="actions">
+                                <a href="/restaurants/{{ restaurant.id }}/edit" class="btn-edit">✏️ Editar</a>
+
+                                <form action="/restaurants/{{ restaurant.id }}/delete" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este restaurante?');" style="flex: 1;">
+                                    <button type="submit" class="btn-delete">🗑️ Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div style="background: white; padding: 40px; text-align: center; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                <h3 style="color: #6c757d; margin: 0;">No se encontraron restaurantes con los filtros seleccionados.</h3>
+                <p><a href="/" style="color: #0d6efd;">Haz clic aquí para borrar los filtros</a></p>
+            </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Restaurante - FriendlyEats</title>
+    <!-- Ruta corregida según la estructura del proyecto: static/css/styles.css -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px;">
+    
+    <!-- Contenedor Principal del Formulario -->
+    <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+        <h2 style="color: #0f5132; margin-top: 0;">✏️ Editar Restaurante</h2>
+        
+        <!-- Formulario enviado vía POST a /restaurants/{id}/edit -->
+        <form action="/restaurants/{{ restaurant.id }}/edit" method="POST">
+            
+            <!-- Campo: Nombre del Restaurante -->
+            <div style="margin-bottom: 15px;">
+                <label for="name" style="display: block; font-weight: bold; margin-bottom: 5px;">Nombre:</label>
+                <input 
+                    type="text" 
+                    id="name"
+                    name="name" 
+                    value="{{ restaurant.name }}" 
+                    required 
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;"
+                >
+            </div>
+
+            <!-- Campo: Categoría Gastronómica -->
+            <div style="margin-bottom: 15px;">
+                <label for="category" style="display: block; font-weight: bold; margin-bottom: 5px;">Categoría:</label>
+                <input 
+                    type="text" 
+                    id="category"
+                    name="category" 
+                    value="{{ restaurant.category }}" 
+                    required 
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;"
+                >
+            </div>
+
+            <!-- Campo: Ciudad -->
+            <div style="margin-bottom: 15px;">
+                <label for="city" style="display: block; font-weight: bold; margin-bottom: 5px;">Ciudad:</label>
+                <input 
+                    type="text" 
+                    id="city"
+                    name="city" 
+                    value="{{ restaurant.city }}" 
+                    required 
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;"
+                >
+            </div>
+
+            <!-- Campo: Rango de Precio (1 a 4) -->
+            <div style="margin-bottom: 15px;">
+                <label for="price" style="display: block; font-weight: bold; margin-bottom: 5px;">Precio:</label>
+                <select 
+                    id="price"
+                    name="price" 
+                    required 
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;"
+                >
+                    <option value="1" {% if restaurant.price == 1 %}selected{% endif %}>$ (Económico)</option>
+                    <option value="2" {% if restaurant.price == 2 %}selected{% endif %}>$$ (Moderado)</option>
+                    <option value="3" {% if restaurant.price == 3 %}selected{% endif %}>$$$ (Ejecutivo)</option>
+                    <option value="4" {% if restaurant.price == 4 %}selected{% endif %}>$$$$ (Gourmet)</option>
+                </select>
+            </div>
+
+            <!-- Campo: URL de Fotografía -->
+            <div style="margin-bottom: 20px;">
+                <label for="photo" style="display: block; font-weight: bold; margin-bottom: 5px;">URL de Foto:</label>
+                <input 
+                    type="url" 
+                    id="photo"
+                    name="photo" 
+                    value="{{ restaurant.photo }}" 
+                    placeholder="https://ejemplo.com/imagen.jpg"
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box;"
+                >
+            </div>
+
+            <!-- Botones de Acción: Guardar / Cancelar -->
+            <div style="display: flex; gap: 10px;">
+                <button 
+                    type="submit" 
+                    style="background-color: #0f5132; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1;"
+                >
+                    💾 Guardar Cambios
+                </button>
+                <a 
+                    href="/" 
+                    style="background-color: #6c757d; color: white; text-decoration: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; text-align: center;"
+                >
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>

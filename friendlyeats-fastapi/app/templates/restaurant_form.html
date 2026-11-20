@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <h2 style="color: #0f5132; margin-bottom: 20px;">➕ Agregar Nuevo Restaurante</h2>
+    
+    <form action="/restaurants/new" method="POST" style="display: flex; flex-direction: column; gap: 15px;">
+        <div>
+            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Nombre:</label>
+            <input type="text" name="name" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+        
+        <div>
+            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Categoría:</label>
+            <input type="text" name="category" placeholder="Ej. Poblana, Italiana" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+
+        <div>
+            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Ciudad:</label>
+            <input type="text" name="city" placeholder="Ej. Puebla" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+
+        <div>
+            <label style="font-weight: bold; display: block; margin-bottom: 5px;">Precio:</label>
+            <select name="price" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; background: white;">
+                <option value="1">🟢 Económico ($)</option>
+                <option value="2">🟡 Moderado ($$)</option>
+                <option value="3">🟠 Ejecutivo ($$$)</option>
+                <option value="4">🔴 Gourmet ($$$$)</option>
+            </select>
+        </div>
+
+        <div>
+            <label style="font-weight: bold; display: block; margin-bottom: 5px;">URL de la Foto (Opcional):</label>
+            <input type="url" name="photo" placeholder="https://..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <button type="submit" style="flex: 1; padding: 12px; background: #0f5132; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                Guardar Restaurante
+            </button>
+            <a href="/" style="padding: 12px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; text-align: center;">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

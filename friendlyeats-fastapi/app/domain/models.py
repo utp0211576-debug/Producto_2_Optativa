@@ -1,0 +1,1 @@
+# Mantiene abstracciones del dominio si se requieren en capas posteriores

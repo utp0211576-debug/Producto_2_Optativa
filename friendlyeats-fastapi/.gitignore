@@ -1,0 +1,21 @@
+# Entornos virtuales y caché de Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*\$py.class
+.pytest_cache/
+
+# Credenciales y variables de entorno (NUNCA subir a GitHub público)
+.env
+serviceAccountKey.json
+
+# Archivos de registro (logs) de Firebase y Firestore
+firebase-debug.log
+firestore-debug.log
+*.log
+
+# Configuración local del editor
+.vscode/
+.idea/
